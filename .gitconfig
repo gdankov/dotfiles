@@ -1,1 +1,7 @@
-/Users/i336730/.gitconfig
+[alias]
+	logtree = log --oneline --graph --all --decorate
+	gui = !sh -c /usr/local/git/libexec/git-core/git-gui
+    co = checkout
+[user]
+	name = Georgi Dankov
+	email = gddankov@gmail.com
