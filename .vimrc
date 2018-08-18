@@ -35,25 +35,31 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'vim-ruby/vim-ruby'                                                                        " Ruby plugin
 
-    Plug 'mhartington/oceanic-next'                                                                 " My current colorscheme
+    Plug 'mhinz/vim-startify'                                                                       " Fancy start screen
+
+    Plug 'zirrostig/vim-schlepp'                                                                    " Move lines (or bocks) of text around easily
+
+    Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
 call plug#end()
 " ---------------------------------------------------------------------
 
 
+
 " ------------------------------ GENERAL ------------------------------
 set mouse=a                                                         "Enable mouse
+set ttymouse=sgr                                                    "Make the mouse work even in columns beyond 223
 set backspace=indent,eol,start                                      "Make backspace normal
 set nocompatible                                                    "Disable vi compatibility. Because we're not in 1995
 set tw=0                                                            "Disable automactic line wrapping
 set list                                                            "Display whitespace characters
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<,space:·          "Specify whitespace characters visualization
 set noerrorbells                                                    "Disable beeping
-set fileencoding=utf-8
 set encoding=utf8                                                   "Encoding
 set ffs=unix,dos                                                    "File formats that will be tried (in order) when vim reads and writes to a file
 set splitbelow                                                      "Set preview window position to bottom of the page
-set scrolloff=5                                                     "Show at least N lines above/below the cursor."
-set ttyfast
+set scrolloff=5                                                     "Show at least N lines above/below the cursor.
+
+set termguicolors                                                   "Enable TrueColor
 
 let mapleader=","                                                   "Leader is comma
 
@@ -83,13 +89,13 @@ com! DiffSaved call s:DiffWithSaved()
 
 " ------------------------------ COLORS ------------------------------
 syntax enable                                           "Enable syntax processing
-colorscheme OceanicNext                                 "This colorscheme
-highlight SpecialKey ctermfg=240 guifg=grey70           "Whitespace characters color
+colorscheme onedark                                     "This colorscheme
+highlight SpecialKey ctermfg=240 guifg=grey35           "Whitespace characters color
 highlight Search ctermfg=255 ctermbg=240                "Search result highlight color
+highlight VertSplit guifg=#ACB2BE                       "Vertical split highlight color
 
-set term=screen-256color
 
-let g:airline_theme = 'oceanicnext'                     "Airilne theme
+let g:airline_theme = 'onedark'                     "Airilne theme
 " ---------------------------------------------------------------------
 
 
@@ -97,6 +103,7 @@ let g:airline_theme = 'oceanicnext'                     "Airilne theme
 set tabstop=4               "Number of visual spaces per TAB
 set softtabstop=4           "Number of spaces in tab when editing
 set expandtab               "Tabs are spaces
+set shiftwidth=4            "Indent with 4 spaces
 " ---------------------------------------------------------------------
 
 
@@ -120,11 +127,9 @@ set ignorecase              "Ignore case on search
 
 
 " ------------------------------ FOLDING ------------------------------
-"set foldenable              "Enable folding
-"set foldlevelstart=10       "Open most folds by default
-"set foldnestmax=10          "10 nested fold max
-"set foldmethod=syntax       "Fold based on syntax highlighting
-"nnoremap <space> za         "Space open/closes folds
+set foldenable              "Enable folding
+set foldmethod=syntax       "Fold based on syntax highlighting
+set foldlevelstart=99       "Do not close folds when a buffer is opened
 " ---------------------------------------------------------------------
 
 
@@ -138,7 +143,6 @@ nnoremap k gk
 inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " ---------------------------------------------------------------------
-
 
 
 
@@ -335,10 +339,12 @@ xmap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expan
 let g:ale_completion_enabled = 1
 
 " Error sign in gutter
-let g:ale_sign_error = 'X'
+let g:ale_sign_error = '·X'
 
 " Warning sign in gutter
-let g:ale_sign_warning = '!'
+let g:ale_sign_warning = '·!'
+" Warning sign color
+highlight ALEWarningSign ctermfg=yellow
 
 " Display error information in Airline
 let g:airline#extensions#ale#enabled = 1
@@ -363,3 +369,32 @@ let g:ale_set_highlights = 0
 
 " --------------------------------------------------------------------------
 
+
+
+" --------------------------------- Startify -------------------------------
+
+" Center the cow
+function! s:filter_header(lines) abort
+        let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
+        let centered_lines = map(copy(a:lines),
+            \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+        return centered_lines
+endfunction
+
+let g:startify_custom_header = s:filter_header(startify#fortune#cowsay())
+
+" Center the lists
+let g:startify_padding_left = 130
+" --------------------------------------------------------------------------
+
+
+
+" --------------------------------- Schlepp -------------------------------
+
+" Movement
+vmap <unique> <up>    <Plug>SchleppUp
+vmap <unique> <down>  <Plug>SchleppDown
+vmap <unique> <left>  <Plug>SchleppLeft
+vmap <unique> <right> <Plug>SchleppRight
+
+" --------------------------------------------------------------------------
