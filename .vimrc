@@ -39,6 +39,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'zirrostig/vim-schlepp'                                                                    " Move lines (or bocks) of text around easily
 
+    Plug 'tpope/vim-commentary'                                                                     " Comment stuff out
+
     Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
 call plug#end()
 " ---------------------------------------------------------------------
