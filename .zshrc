@@ -16,8 +16,8 @@ alias gits="git status"
 # Dotfiles
 alias dotcfg='$(which git) --git-dir=$HOME/.dotcfg/ --work-tree=$HOME'
 dotcfg config --local status.showUntrackedFiles no
-dotcfg update-index --assume-unchanged LICENSE
-dotcfg update-index --assume-unchanged README.md
+dotcfg update-index --assume-unchanged $HOME/LICENSE
+dotcfg update-index --assume-unchanged $HOME/README.md
 
 
 # Set language environment
