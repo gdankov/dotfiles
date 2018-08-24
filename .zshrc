@@ -26,6 +26,8 @@ dotcfg update-index --assume-unchanged README.md
 # Set language environment
 export LANG=en_US.UTF-8
 
+export KUBE_EDITOR="vim"
+
 # Golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
