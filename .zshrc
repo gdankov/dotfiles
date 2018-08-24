@@ -3,9 +3,6 @@ export ZSH=/Users/i336730/.oh-my-zsh
 
 ZSH_THEME="spaceship"
 
-# Enable command auto-correction.
-ENABLE_CORRECTION="true"
-
 plugins=(
   git
   z
