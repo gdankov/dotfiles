@@ -18,7 +18,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'Shougo/neosnippet.vim'                                                                    " Add snippet support. Used for function prototype completion
     Plug 'Shougo/neosnippet-snippets'                                                               " Collection of snippets for neosnippet
 
-    Plug 'ctrlpvim/ctrlp.vim'                                                                       " Fuzzy file finder
+    Plug '/usr/local/opt/fzf'                                                                       " Use brew installed fzf
+    Plug 'junegunn/fzf.vim'                                                                         " Awesome fuzzy finder
 
     Plug 'jiangmiao/auto-pairs'                                                                     " Insert/delete brackets
 
@@ -286,28 +287,6 @@ let vim_markdown_preview_github=1
 
 
 
-" --------------------------------- Ctrl-P --------------------------------
-
-" Position and listing order of results
-let g:ctrlp_match_window = 'bottom,order:btt'
-
-" Open new instance of a file every time
-let g:ctrlp_switch_buffer = 0
-
-" Start search from cwd
-let g:ctrlp_working_path_mode = 'w'
-
-" Use ripgrep for listing files
-if executable('rg')
-    set grepprg=rg\ --color=never
-    let g:ctrlp_user_command = 'rg %s --files --color=never --glob "!/vendor/"'
-    let g:ctrlp_use_caching = 0
-endif
-
-" --------------------------------------------------------------------------
-
-
-
 " --------------------------------- Deoplete -------------------------------
 
 " Enable lazy loading
@@ -411,5 +390,41 @@ vmap <unique> <up>    <Plug>SchleppUp
 vmap <unique> <down>  <Plug>SchleppDown
 vmap <unique> <left>  <Plug>SchleppLeft
 vmap <unique> <right> <Plug>SchleppRight
+
+" --------------------------------------------------------------------------
+
+
+
+" --------------------------------- FZF  -------------------------------
+
+" Fuzzy find files
+nnoremap <silent> <leader>f :Files<CR>
+
+" Search for a string in all files
+nnoremap <silent> <leader>s :execute 'Rg ' . input('Search for --> ')<CR>
+
+" Search the word under the cursor
+nnoremap <silent> <leader>c :execute 'Rg' expand('<cword>')<CR>
+
+" Layout config
+let g:fzf_layout = { 'down': '~30%' }
+
+" Show preview when searching files
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" Use Rg for searching for contents and show preview
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg  --line-number --no-heading  --smart-case '.shellescape(<q-args>), 1,
+  \    fzf#vim#with_preview({'down': '60%', 'options': '--bind alt-down:preview-down --bind alt-up:preview-up'},'right:50%', '?'),
+  \   <bang>0)
+
+
+" Extra key bindings
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 
 " --------------------------------------------------------------------------
