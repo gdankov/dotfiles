@@ -248,13 +248,13 @@ function! s:build_go_files()
 endfunction
 
 " Build file
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
 " Run
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 " Run tests
-autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>gt  <Plug>(go-test)
 " Show coverage
-autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <Leader>gc <Plug>(go-coverage-toggle)
 
 " Call goimports on save
 let g:go_fmt_command = "goimports"
