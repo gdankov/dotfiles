@@ -154,11 +154,20 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 " --------------------------------- NERDTree -------------------------------
 
-" Toggle NERDTree
-nnoremap <C-n> :NERDTreeToggle<CR>
+function! NERDTreeToggleAndFind()
+  if (exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1)
+    execute ':NERDTreeClose'
+  else
+    if (expand("%:t") != '')
+        execute ':NERDTreeFind'
+    else
+        execute ':NERDTreeToggle'
+    endif
+  endif
+endfunction
 
-" Select current file in the tree view
-map <leader>f :NERDTreeFind<CR>
+" Toggle NERDTree
+nnoremap <C-n> :call NERDTreeToggleAndFind()<CR>
 
 " Single mouse click will open any node
 let g:NERDTreeMouseMode=3
