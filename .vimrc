@@ -41,6 +41,10 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'tpope/vim-commentary'                                                                     " Comment stuff out
 
+    Plug 'christoomey/vim-system-copy'                                                              " Add mappings to copy to clipboard
+
+    Plug 'junegunn/vim-slash'                                                                       " Improve in-buffer search
+
     Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
 call plug#end()
 " ---------------------------------------------------------------------
