@@ -56,8 +56,7 @@ source /usr/local/opt/chruby/share/chruby/auto.sh
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--height 15% --border'
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob "!/vendor/"'
-
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob "!vendor/"'
 
 
 export GIT_EDITOR="vim"

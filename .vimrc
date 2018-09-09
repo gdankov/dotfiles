@@ -417,7 +417,7 @@ command! -bang -nargs=? -complete=dir Files
 " Use Rg for searching for contents and show preview
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg  --line-number --no-heading  --smart-case '.shellescape(<q-args>), 1,
+  \   'rg  --line-number --no-heading  --smart-case --no-ignore --hidden --follow --glob "!vendor/" '.shellescape(<q-args>), 1,
   \    fzf#vim#with_preview({'down': '60%', 'options': '--bind alt-down:preview-down --bind alt-up:preview-up'},'right:50%', '?'),
   \   <bang>0)
 
