@@ -45,6 +45,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'christoomey/vim-system-copy'                                                              " Add mappings to copy to clipboard
 
     Plug 'junegunn/vim-slash'                                                                       " Improve in-buffer search
+    Plug 'henrik/vim-indexed-search'                                                                " Print total number of matches and the index of current match when searching
 
     Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
 call plug#end()
