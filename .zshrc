@@ -13,6 +13,39 @@ source $ZSH/oh-my-zsh.sh
 # Aliases
 alias gits="git status"
 
+
+# Kubernetes aliases
+alias k='kubectl'
+
+alias kg='kubectl get'
+alias kga='kubectl get all'
+alias kgp='kubectl get pods'
+alias kgd='kubectl get deployments'
+alias kgst='kubectl get statefulsets'
+alias kgse='kubectl get services'
+alias kgj='kubectl get jobs'
+
+alias kdes='kubectl describe'
+alias kdesp='kubectl describe pod'
+alias kdesd='kubectl describe deployment'
+alias kdesst='kubectl describe statefulset'
+alias kdesse='kubectl describe service'
+alias kdesj='kubectl describe job'
+
+alias kdel='kubectl delete'
+alias kdelp='kubectl delete pod'
+alias kdeld='kubectl delete deployment'
+alias kdelst='kubectl delete statefulset'
+alias kdelse='kubectl delete service'
+alias kdelj='kubectl delete job'
+
+alias ka='kubectl apply -f'
+alias klo='kubectl logs -f'
+alias kex='kubectl exec -it'
+
+# Use bluemix cluster
+export KUBECONFIG=$HOME/.bluemix/plugins/container-service/clusters/alfheim/kube-config-lon02-alfheim.yml
+
 # Dotfiles
 alias dotcfg='$(which git) --git-dir=$HOME/.dotcfg/ --work-tree=$HOME'
 dotcfg config --local status.showUntrackedFiles no
@@ -22,8 +55,6 @@ dotcfg update-index --assume-unchanged $HOME/README.md
 
 # Set language environment
 export LANG=en_US.UTF-8
-
-export KUBE_EDITOR="vim"
 
 # Golang
 export GOPATH=$HOME/go
@@ -59,7 +90,26 @@ export FZF_DEFAULT_OPTS='--height 15% --border'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob "!vendor/"'
 
 
+# Editors
 export GIT_EDITOR="vim"
+export KUBE_EDITOR="vim"
+
+# Kubernetes
+
+# set namespace
+knam() {
+    local ctx=$(kubectl config current-context)
+    local ns="$1"
+
+    ns=$(kubectl get namespace $1 --no-headers --output=go-template={{.metadata.name}} 2>/dev/null)
+
+    if [ -z "${ns}" ]; then
+        echo "Namespace (${1}) not found!"
+        exit 1
+    fi
+
+    kubectl config set-context ${ctx} --namespace="${ns}"
+}
 
 
 
