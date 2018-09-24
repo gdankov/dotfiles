@@ -60,9 +60,6 @@ export LANG=en_US.UTF-8
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
-### Added by IBM Cloud CLI
-source /usr/local/Bluemix/bx/zsh_autocomplete
-
 # Spaceship theme config
 export SPACESHIP_DIR_TRUNC=10
 export SPACESHIP_DIR_TRUNC_REPO=false
@@ -76,6 +73,7 @@ eval "$(direnv hook zsh)"
 
 # Git duet
 export GIT_DUET_ROTATE_AUTHOR=1
+export GIT_DUET_GLOBAL=true
 
 # Ruby
 source /usr/local/opt/chruby/share/chruby/chruby.sh
