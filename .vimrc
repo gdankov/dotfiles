@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'SirVer/ultisnips'                                                                         " Add various code snippets
     Plug 'josharian/impl'                                                                           " Generates method stubs for implementing an interface
 
-    "Plug 'jeffkreeftmeijer/vim-numbertoggle'                                                       " Toggle between relative and absolute line numbers -- Note: currently disabled because it's causing lag for some reason
+    Plug 'jeffkreeftmeijer/vim-numbertoggle'                                                       " Toggle between relative and absolute line numbers -- Note: currently disabled because it's causing lag for some reason
 
     Plug 'vim-ruby/vim-ruby'                                                                        " Ruby plugin
 
@@ -66,6 +66,8 @@ set encoding=utf8                                                   "Encoding
 set ffs=unix,dos                                                    "File formats that will be tried (in order) when vim reads and writes to a file
 set splitbelow                                                      "Set preview window position to bottom of the page
 set scrolloff=5                                                     "Show at least N lines above/below the cursor.
+set hidden                                                          "Opening a new file when the current buffer has unsaved changes causes files to be hidden instead of closed
+set undolevels=1000                                                 "Undo many times
 
 set termguicolors                                                   "Enable TrueColor
 
@@ -73,6 +75,12 @@ let mapleader=","                                                   "Leader is c
 
 "Replace escape with jk
 inoremap jk <esc>
+
+" Saving that precious key hit
+nnoremap ; :
+
+"Convert current word to uppercase
+inoremap <C-u> <esc>mzgUiw`za
 
 "Save a given assortment of windows so that they're there next time vim is opened (using vim -S)
 nnoremap <leader>s :mksession<CR>
@@ -92,6 +100,16 @@ function! s:DiffWithSaved()
 endfunction
 
 com! DiffSaved call s:DiffWithSaved()
+
+
+" Maximize current window
+command Foc execute "winc | | winc _"
+" Show all windows
+command Unfoc execute "winc ="
+
+" vimrc key mappings
+nmap <silent> <leader>ev :edit ~/.vimrc<CR>
+nmap <silent> <leader>sv :source ~/.vimrc<CR>
 " ---------------------------------------------------------------------
 
 
@@ -101,7 +119,7 @@ colorscheme onedark                                     "This colorscheme
 highlight SpecialKey ctermfg=240 guifg=grey35           "Whitespace characters color
 highlight Search ctermfg=255 ctermbg=240                "Search result highlight color
 highlight VertSplit guifg=#ACB2BE                       "Vertical split highlight color
-
+highlight CursorLineNr guifg=#e5c07b                    "Current line number color
 
 let g:airline_theme = 'onedark'                     "Airilne theme
 " ---------------------------------------------------------------------
@@ -122,6 +140,7 @@ filetype indent on                      "Load filetype-specific indent files
 set wildmenu                            "Visual autocomplete for command menu
 set lazyredraw                          "Redraw only when we need to.
 set showmatch                           "Highlight matching [{()}]
+set fillchars+=vert:│                   "Solid vertical split line
 " set cursorline                          "Highlight current line - found it to be slow
 " highlight CursorLine ctermbg=8
 " ---------------------------------------------------------------------
@@ -294,9 +313,6 @@ let vim_markdown_preview_github=1
 let g:deoplete#enable_at_startup = 0
 autocmd InsertEnter * call deoplete#enable()
 
-" Use smart case
-let g:deoplete#enable_smart_case = 1
-
 " Disable annoying preview window
 set completeopt-=preview
 
@@ -314,6 +330,7 @@ call deoplete#custom#option('max_list', 80)
 
 " Enable function prototype completion
 let g:neosnippet#enable_completed_snippet = 1
+autocmd CompleteDone * call neosnippet#complete_done()
 
 " Hide annoying symbols
 set conceallevel=2
@@ -323,7 +340,6 @@ set concealcursor=niv
 imap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
 smap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
 xmap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
-
 " --------------------------------------------------------------------------
 
 
@@ -401,6 +417,9 @@ vmap <unique> <right> <Plug>SchleppRight
 " Fuzzy find files
 nnoremap <silent> <leader>f :Files<CR>
 
+" Fuzzy find buffers
+nnoremap <silent> <leader>b :Buffers<CR>
+
 " Search for a string in all files
 nnoremap <silent> <leader>s :execute 'Rg ' . input('Search for --> ')<CR>
 
@@ -409,6 +428,9 @@ nnoremap <silent> <leader>c :execute 'Rg' expand('<cword>')<CR>
 
 " Layout config
 let g:fzf_layout = { 'down': '~30%' }
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
 
 " Show preview when searching files
 command! -bang -nargs=? -complete=dir Files
@@ -420,7 +442,6 @@ command! -bang -nargs=* Rg
   \   'rg  --line-number --no-heading  --smart-case --no-ignore --hidden --follow --glob "!vendor/" '.shellescape(<q-args>), 1,
   \    fzf#vim#with_preview({'down': '60%', 'options': '--bind alt-down:preview-down --bind alt-up:preview-up'},'right:50%', '?'),
   \   <bang>0)
-
 
 " Extra key bindings
 let g:fzf_action = {
