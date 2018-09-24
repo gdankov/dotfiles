@@ -1,0 +1,56 @@
+#    ___    ___
+#   /   |  / (_)___ _________  _____
+#  / /| | / / / __ `/ ___/ _ \/ ___/
+# / ___ |/ / / /_/ (__  )  __(__  ) 
+#/_/  |_/_/_/\__,_/____/\___/____/  
+
+# Because bash...
+alias watch='watch '
+
+# ------------------ Git ------------------
+alias gits="git status"
+
+# ------------------ Kubernetes ------------------
+alias k='kubectl'
+
+alias kg='kubectl get'
+alias kga='kubectl get all'
+alias kgp='kubectl get pods'
+alias kgd='kubectl get deployments'
+alias kgst='kubectl get statefulsets'
+alias kgse='kubectl get services'
+alias kgj='kubectl get jobs'
+alias kgn='kubectl get nodes'
+alias kgsec='kubectl get secrets'
+alias kgi='kubectl get ingresses'
+
+alias kdes='kubectl describe'
+alias kdesp='kubectl describe pod'
+alias kdesd='kubectl describe deployment'
+alias kdesst='kubectl describe statefulset'
+alias kdesse='kubectl describe service'
+alias kdessec='kubectl describe secret'
+alias kdesj='kubectl describe job'
+alias kdesi='kubectl describe ingress'
+
+alias ke='kubectl edit'
+alias kep='kubectl edit pod'
+alias ked='kubectl edit deployment'
+alias kest='kubectl edit statefulset'
+alias keser='kubectl edit service'
+alias kesec='kubectl edit secret'
+alias kej='kubectl edit job'
+alias kei='kubectl edit ingress'
+
+alias kdel='kubectl delete'
+alias kdelp='kubectl delete pod'
+alias kdeld='kubectl delete deployment'
+alias kdelst='kubectl delete statefulset'
+alias kdelse='kubectl delete service'
+alias kdelj='kubectl delete job'
+alias kdeli='kubectl delete ingress'
+
+alias ka='kubectl apply -f'
+alias klo='kubectl logs -f'
+alias kex='kube-exec'
+alias kns='change-kube-namespace'
