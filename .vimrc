@@ -44,8 +44,17 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'christoomey/vim-system-copy'                                                              " Add mappings to copy to clipboard
 
-    Plug 'junegunn/vim-slash'                                                                       " Improve in-buffer search
-    Plug 'henrik/vim-indexed-search'                                                                " Print total number of matches and the index of current match when searching
+    Plug 'luan/vipe'                                                                                " Send test commands to a pipe
+
+    Plug 'powerman/vim-plugin-AnsiEsc'                                                              " ANSI escape sequences concealed, but highlighted as specified
+
+    Plug 'RRethy/vim-illuminate'                                                                    " Selectively illuminating other uses of the current word under the cursor
+
+    Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }                                                        " Runs shfmt to auto format the current buffer
+
+    Plug 'romainl/vim-cool'                                                                         " Make hlsearch more useful
+
+    Plug 'lervag/vimtex'                                                                            " Plugin for editing LaTeX files
 
     Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
 call plug#end()
@@ -449,4 +458,31 @@ let g:fzf_action = {
       \ 'ctrl-v': 'vsplit'
       \ }
 
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Vipe  -------------------------------
+" Show number of matches in the command-line
+let g:CoolTotalMatches = 1
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Vipe  -------------------------------
+map <leader>t :call RunRspec()<cr>
+function! RunRspec()
+    call vipe#push('bundle exec rspec ' . expand('%'))
+endfunction
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- VimTex  -------------------------------
+let g:vimtex_complete_close_braces = 1
+let g:tex_flavor = 'latex'
+let g:vimtex_compiler_latexmk = {'callback' : 0}
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Shfmt  -------------------------------
+" Use 2 spaces instead of tabs
+let g:shfmt_extra_args = '-i 2'
 " --------------------------------------------------------------------------
