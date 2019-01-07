@@ -80,6 +80,10 @@ kube-exec() {
     kubectl exec -it $1 /bin/bash
 }
 
+kube-nuke-pod() {
+    kubectl delete pod --grace-period=0 --force "$1"
+}
+
 # ------------------ CF ------------------
 # create a cf org with a dev space inside
 cf-org() {
