@@ -81,9 +81,13 @@ set undolevels=1000                                                 "Undo many t
 set termguicolors                                                   "Enable TrueColor
 
 let mapleader=","                                                   "Leader is comma
+let maplocalleader=","                                              "Local leader is comma
 
 "Replace escape with jk
 inoremap jk <esc>
+
+"For pairing convenience
+inoremap ;; <esc>
 
 " Saving that precious key hit
 nnoremap ; :
@@ -119,6 +123,15 @@ command Unfoc execute "winc ="
 " vimrc key mappings
 nmap <silent> <leader>ev :edit ~/.vimrc<CR>
 nmap <silent> <leader>sv :source ~/.vimrc<CR>
+
+" Reload file
+inoremap <silent> <leader>r :edit<CR>
+
+" Read *.pl files as prolog files
+augroup ft_prolog
+    au!
+    au BufNewFile,BufRead *.pl set filetype=prolog
+augroup END
 " ---------------------------------------------------------------------
 
 
@@ -448,7 +461,7 @@ command! -bang -nargs=? -complete=dir Files
 " Use Rg for searching for contents and show preview
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg  --line-number --no-heading  --smart-case --no-ignore --hidden --follow --glob "!vendor/" '.shellescape(<q-args>), 1,
+  \   'rg  --line-number --no-heading  --smart-case --no-ignore --hidden --follow --glob "!.git/*" --glob "!vendor/" '.shellescape(<q-args>), 1,
   \    fzf#vim#with_preview({'down': '60%', 'options': '--bind alt-down:preview-down --bind alt-up:preview-up'},'right:50%', '?'),
   \   <bang>0)
 
