@@ -14,7 +14,7 @@ source $ZSH/oh-my-zsh.sh
 export KUBECONFIG=$HOME/.bluemix/plugins/container-service/clusters/alfheim/kube-config-lon02-alfheim.yml
 
 # Dotfiles
-alias dotcfg='$(which git) --git-dir=$HOME/.dotcfg/ --work-tree=$HOME'
+alias dotcfg='/usr/local/bin/git --git-dir=$HOME/.dotcfg/ --work-tree=$HOME'
 dotcfg config --local status.showUntrackedFiles no
 dotcfg update-index --assume-unchanged $HOME/LICENSE
 dotcfg update-index --assume-unchanged $HOME/README.md
@@ -55,6 +55,13 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob
 export GIT_EDITOR="vim"
 export KUBE_EDITOR="vim"
 
+# Keys
+bindkey '\C-b' beginning-of-line
+
+# Hub
+eval "$(hub alias -s)"
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit
 
 source $HOME/.funcs
 source $HOME/.aliases
