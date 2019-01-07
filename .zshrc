@@ -5,6 +5,7 @@ ZSH_THEME="spaceship"
 
 plugins=(
   z
+  fz
 )
 
 source $ZSH/oh-my-zsh.sh
