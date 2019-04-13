@@ -10,9 +10,6 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# Use bluemix cluster
-export KUBECONFIG=$HOME/.bluemix/plugins/container-service/clusters/alfheim/kube-config-lon02-alfheim.yml
-
 # Dotfiles
 alias dotcfg='/usr/local/bin/git --git-dir=$HOME/.dotcfg/ --work-tree=$HOME'
 dotcfg config --local status.showUntrackedFiles no
