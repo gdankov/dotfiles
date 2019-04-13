@@ -124,3 +124,27 @@ extract(){
     fi
 }
 
+
+# ------------------ IBM Cloud ------------------
+
+kluster-sync() {
+    local cluster_name="$1"
+    local kubeconf=$(ibmcloud ks cluster-config "$cluster_name" --export)
+    eval "$kubeconf"
+}
+
+kluster() {
+    local cluster_name="$1"
+    if [ -z "$cluster_name" ];then
+        bx ks clusters
+        return 0
+    fi
+    local kubeconf=$(ls $HOME/.bluemix/plugins/container-service/clusters/"$cluster_name"/*.yml)
+    export KUBECONFIG="$kubeconf"
+}
+
+
+kluster-nodes() {
+    bx ks workers --cluster "$1"
+}
+

@@ -109,3 +109,7 @@ alias ka='kubectl apply -f'
 alias klo='kubectl logs -f'
 alias kex='kube-exec'
 alias kns='change-kube-namespace'
+
+
+# ------------------ `General ------------------
+alias klusters='kluster'
