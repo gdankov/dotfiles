@@ -468,35 +468,14 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_build_constraints = 1
 
-map <leader>n :cnext<CR>
-map <leader>p :cprevious<CR>
-nnoremap <leader>cc :cclose<CR>
-
-map <leader>n :lnext<CR>
-map <leader>p :lprevious<CR>
-nnoremap <leader>cc :lclose<CR>
-
-" Run :GoBuild or :GoTestCompile based on the go file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
-" Build file
-autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
-" Run
-autocmd FileType go nmap <leader>gr  <Plug>(go-run)
-" Run tests
-autocmd FileType go nmap <leader>gt  <Plug>(go-test)
-" Show coverage
-autocmd FileType go nmap <Leader>gc <Plug>(go-coverage-toggle)
+" disable the default mappings provided by the plugin
+let g:go_def_mapping_enabled = 0
 
 " Call goimports on save
 let g:go_fmt_command = "goimports"
+
+" Disable showing a location list when |'g:go_fmt_command'| fails
+let g:go_fmt_fail_silently = 1
 
 " Alternate toggles
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')              " Switch to test file
