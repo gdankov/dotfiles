@@ -2,10 +2,9 @@
 call plug#begin('~/.vim/plugged')
     Plug 'junegunn/vim-plug'                                                                        " This plugin manager
 
-    Plug 'vim-airline/vim-airline'                                                                  " Status line
-    Plug 'vim-airline/vim-airline-themes'                                                           " Themes for the status line
-    Plug 'edkolev/tmuxline.vim'                                                                     " Tmux status line generator that supports airline
-    Plug 'tpope/vim-fugitive'                                                                       " Git wrapper. Used to display branch in airline
+    Plug 'itchyny/lightline.vim'                                                                    " Light and configurable statusline
+
+    Plug 'tpope/vim-fugitive'                                                                       " Git wrapper
 
     Plug 'scrooloose/nerdtree'                                                                      " Directory tree explorer
 
@@ -77,6 +76,7 @@ set splitbelow                                                      "Set preview
 set scrolloff=5                                                     "Show at least N lines above/below the cursor.
 set hidden                                                          "Opening a new file when the current buffer has unsaved changes causes files to be hidden instead of closed
 set undolevels=1000                                                 "Undo many times
+set noshowmode                                                      "Do not show message on last line when in Insert, Replace or Visual mode
 
 set termguicolors                                                   "Enable TrueColor
 
@@ -247,17 +247,171 @@ let NERDTreeShowHidden=1
 " --------------------------------------------------------------------------
 
 
+" --------------------------------- Lightline --------------------------------
 
-" --------------------------------- Airline --------------------------------
+" Show statusline
+set laststatus=2
 
-" Show branch name
-let g:airline#extensions#branch#enabled = 1
-"
-" Do not override tmux settings
-let g:airline#extensions#tmuxline#enabled = 0
+" Colors
+let s:green = [ '#99ad6a', 107 ]
+let s:red = [ '#dd1c1c', 167 ]
+let s:yellow = [ '#ffb964', 215 ]
+let s:blue = [ '#6A95EA', 103, 'bold' ]
+let s:lightgrey = [ '#999494', 'none' ]
+let s:blackish = [ '#1c1c1c', 'none' ]
+let s:darkgrey = [ '#282525', 'none' ]
 
-" Enable powerline symbols
-let g:airline_powerline_fonts = 1
+let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
+
+" Middle
+let s:p.normal.middle = [ [ s:lightgrey, s:blackish ] ]
+
+" Left
+let s:p.normal.left = [ [ s:blue, s:blackish ], [ s:green, s:blackish ], [ s:red, s:blackish ], [ s:lightgrey, s:blackish ] ]
+let s:p.insert.left = [ [ s:blue, s:blackish ], [ s:green, s:blackish ], [ s:red, s:blackish ], [ s:lightgrey, s:blackish ] ]
+let s:p.replace.left = [ [ s:blue, s:blackish ], [ s:green, s:blackish ], [ s:red, s:blackish ], [ s:lightgrey, s:blackish ] ]
+let s:p.visual.left = [ [ s:blue, s:blackish ], [ s:green, s:blackish ], [ s:red, s:blackish ], [ s:lightgrey, s:blackish ] ]
+
+" Right
+let s:p.normal.right = [ [ s:lightgrey, s:blackish ], [ s:lightgrey, s:blackish ], [ s:lightgrey, s:blackish ] ]
+
+" Inactive
+let s:p.inactive.middle = [ [ s:lightgrey, s:darkgrey ] ]
+let s:p.inactive.right = [ [ s:darkgrey, s:darkgrey ], [ s:darkgrey, s:darkgrey ] ]
+
+" Errors & warnings
+let s:p.normal.error = [ [ s:red, s:blackish ] ]
+let s:p.normal.warning = [ [ s:yellow, s:blackish ] ]
+
+" Set the palette
+let g:lightline#colorscheme#jellybeans#palette = lightline#colorscheme#flatten(s:p)
+
+" Lightline configs
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch' ],
+      \             [ 'readonly' ],
+      \             [ 'relativepath', 'modified' ] ],
+      \   'right': [ [ 'linter_warnings', 'linter_errors', 'linter_ok' ],
+      \              [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'filetype', 'encodingformat' ] ],
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'LightlineBranch',
+      \   'mode': 'LightlineMode',
+      \   'encodingformat': 'LightlineFileEncodingFormat',
+      \   'lineinfo': 'LightlineLineInfo',
+      \   'percent': 'LightlinePercent',
+      \   'filetype': 'LightlineFiletype',
+      \   'relativepath': 'LightlineRelativePath',
+      \   'modified': 'LightlineModified',
+      \   'readonly': 'LightlineReadonly',
+      \ },
+      \ 'component_expand': {
+      \   'linter_warnings': 'LightlineLinterWarnings',
+      \   'linter_errors': 'LightlineLinterErrors',
+      \ },
+      \ 'component_type': {
+      \   'linter_warnings': 'warning',
+      \   'linter_errors': 'error'
+      \ },
+      \ 'subseparator': { 'left': '', 'right': '' },
+      \ }
+
+" Custom functions
+function! LightlineBranch()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  let branch = fugitive#head()
+  return branch !=# '' ? ' ' . branch : ''
+endfunction
+
+function! LightlineMode()
+  if &ft == 'nerdtree'
+    return '« NERD »'
+  endif
+  return '« ' . lightline#mode() . ' »'
+endfunction
+
+function! LightlineFileEncodingFormat()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  let encoding = &fenc!=#""?&fenc:&enc
+  let format = &ff
+  return encoding . '[' . format . ']'
+endfunction
+
+function! LightlineLineInfo()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return line('.').':'. col('.')
+endfunction
+
+function! LightlinePercent()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return line('.') * 100 / line('$') . '%'
+endfunction
+
+function! LightlineFiletype()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return &ft !=# "" ? &ft : "no ft"
+endfunction
+
+function! LightlineRelativePath()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return expand("%")
+endfunction
+
+function! LightlineModified()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightlineReadonly()
+  if &ft == 'nerdtree'
+    return ''
+  endif
+  return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfunction
+
+" ALE integration
+
+function! LightlineLinterWarnings() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
+endfunction
+
+function! LightlineLinterErrors() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+endfunction
+
+autocmd User ALELint call lightline#update()
+
+augroup LightLineOnALE
+  autocmd!
+  autocmd User ALEFixPre   call lightline#update()
+  autocmd User ALEFixPost  call lightline#update()
+  autocmd User ALELintPre  call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+augroup end
 
 " --------------------------------------------------------------------------
 
