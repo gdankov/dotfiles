@@ -55,7 +55,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'lervag/vimtex'                                                                            " Plugin for editing LaTeX files
 
-    Plug 'joshdick/onedark.vim'                                                                     " My current colorscheme
+    Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
+
 call plug#end()
 " ---------------------------------------------------------------------
 
@@ -136,14 +137,44 @@ augroup END
 
 
 " ------------------------------ COLORS ------------------------------
-syntax enable                                           "Enable syntax processing
-colorscheme onedark                                     "This colorscheme
-highlight SpecialKey ctermfg=240 guifg=grey35           "Whitespace characters color
-highlight Search ctermfg=255 ctermbg=240                "Search result highlight color
-highlight VertSplit guifg=#ACB2BE                       "Vertical split highlight color
-highlight CursorLineNr guifg=#e5c07b                    "Current line number color
+"Enable syntax processing
+syntax enable
 
-let g:airline_theme = 'onedark'                     "Airilne theme
+" Colorscheme overrides
+let g:jellybeans_overrides = {'background': { 'guibg': '1c1c1c' }}
+
+" This colorscheme
+colorscheme jellybeans
+
+" Because jellybeans shows wrong background colors for whitespace characters  on current line
+highlight NonText guibg=NONE
+
+" Line numbers
+highlight LineNr guifg=#545252 guibg=#1c1c1c
+
+" Current line colors
+highlight CursorLine guibg=#232323
+
+" Numbers when cursorline is enabled
+highlight CursorLineNr guibg=#1c1c1c guifg=#6A95EA
+
+" Whitespace characters color
+highlight SpecialKey guifg=grey35
+
+" Search result highlight color
+highlight Search gui=bold guifg=#000000 guibg=#6A95EA
+
+" Vertical split highlight color
+highlight VertSplit guifg=#1c1c1c guibg=#1c1c1c
+
+" Sign column colors
+highlight SignColumn term=standout guifg=#777777 guibg=#1c1c1c
+
+" Status lines of not-current windows
+highlight StatusLineNC guibg=#1c1c1c
+
+" Wildmenu autocomplete
+highlight StatusLine gui=italic guifg=grey guibg=#1c1c1c
 " ---------------------------------------------------------------------
 
 
@@ -157,14 +188,22 @@ set shiftwidth=4            "Indent with 4 spaces
 
 " ------------------------------ UI CONFIG ------------------------------
 set number                              "Show line numbers
-set nocursorline
 filetype indent on                      "Load filetype-specific indent files
 set wildmenu                            "Visual autocomplete for command menu
+set wildmode=longest,full               "Complete till longest common string && Complete the next full match
 set lazyredraw                          "Redraw only when we need to.
 set showmatch                           "Highlight matching [{()}]
 set fillchars+=vert:│                   "Solid vertical split line
-" set cursorline                          "Highlight current line - found it to be slow
-" highlight CursorLine ctermbg=8
+set cursorline                          "Highlight current line
+
+
+augroup CursorLine
+    au!
+    au VimEnter * setlocal cursorline
+    au WinEnter * setlocal cursorline
+    au BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
 " ---------------------------------------------------------------------
 
 
@@ -230,9 +269,6 @@ let NERDTreeAutoDeleteBuffer = 1
 
 " Hide 'Press ? for help' and bookmarks
 let NERDTreeMinimalUI = 1
-
-" Directory colors
-highlight Directory ctermfg=blue
 
 " Expand directory symbols
 let g:NERDTreeDirArrowExpandable = '▸'
