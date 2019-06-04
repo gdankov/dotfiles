@@ -506,19 +506,15 @@ let vim_markdown_preview_github=1
 
 " --------------------------------- ALE -------------------------------
 
-" Enable completion where available.
-let g:ale_completion_enabled = 1
-
 " Error sign in gutter
-let g:ale_sign_error = '·X'
+let g:ale_sign_error = 'X»'
 
 " Warning sign in gutter
-let g:ale_sign_warning = '·!'
-" Warning sign color
-highlight ALEWarningSign ctermfg=yellow
+let g:ale_sign_warning = '!»'
 
-" Display error information in Airline
-let g:airline#extensions#ale#enabled = 1
+" Warning sign color
+highlight ALEWarningSign guibg=#1c1c1c guifg=#8f9627
+highlight ALEErrorSign guibg=#1c1c1c guifg=#dd1c1c
 
 " Format for echo messages
 let g:ale_echo_msg_error_str = 'E'
@@ -526,8 +522,8 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 " Navigate between errors
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> [a <Plug>(ale_previous_wrap)
+nmap <silent> ]a <Plug>(ale_next_wrap)
 
 " Do not run when typing
 let g:ale_lint_on_text_changed = 'never'
