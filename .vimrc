@@ -6,6 +6,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'tpope/vim-fugitive'                                                                       " Git wrapper
 
+    Plug 'rhysd/git-messenger.vim'                                                                  " Reveal the commit messages under the cursor in a 'popup window'
+
     Plug 'scrooloose/nerdtree'                                                                      " Directory tree explorer
 
     Plug 'w0rp/ale'                                                                                 " Asynchronous Lint Engine
@@ -49,6 +51,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'romainl/vim-cool'                                                                         " Make hlsearch more useful
 
     Plug 'lervag/vimtex'                                                                            " Plugin for editing LaTeX files
+
+    Plug 'mtth/scratch.vim'                                                                         " Unobtrusive scratch window
 
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
 
