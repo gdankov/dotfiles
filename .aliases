@@ -92,6 +92,7 @@ alias kecm='kubectl edit configmap'
 alias keds='kubectl edit daemonset'
 alias kers='kubectl edit replicaset'
 alias kero='kubectl edit role'
+alias kesa='kubectl edit serviceaccount'
 
 alias kdel='kubectl delete'
 alias kdelp='kubectl delete pod'
