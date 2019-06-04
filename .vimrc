@@ -10,12 +10,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'w0rp/ale'                                                                                 " Asynchronous Lint Engine
 
-    Plug 'Shougo/deoplete.nvim'                                                                     " Dark powered asynchronous completion framework for neovim/Vim8
-    Plug 'roxma/nvim-yarp'                                                                          " Yet Another Remote Plugin Framework for Neovim (and Vim 8)
-    Plug 'roxma/vim-hug-neovim-rpc'                                                                 " Build a compatibility layer for neovim rpc client working on vim8 -- Note: should probably run pip3 install neovim
-    Plug 'zchee/deoplete-go', { 'do': 'make'}                                                       " Go completion for deoplete
-    Plug 'Shougo/neosnippet.vim'                                                                    " Add snippet support. Used for function prototype completion
-    Plug 'Shougo/neosnippet-snippets'                                                               " Collection of snippets for neosnippet
+    Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}                              " Intellisense engine; full language server protocol support; built from source code
 
     Plug '/usr/local/opt/fzf'                                                                       " Use brew installed fzf
     Plug 'junegunn/fzf.vim'                                                                         " Awesome fuzzy finder
@@ -519,43 +514,6 @@ let vim_markdown_preview_github=1
 
 
 
-" --------------------------------- Deoplete -------------------------------
-
-" Enable lazy loading
-let g:deoplete#enable_at_startup = 0
-autocmd InsertEnter * call deoplete#enable()
-
-" Disable annoying preview window
-set completeopt-=preview
-
-" Set delay for autocompletion after input
-call deoplete#custom#option('auto_complete_delay', 200)
-
-" Limit the number of candidates shown
-call deoplete#custom#option('max_list', 80)
-
-" --------------------------------------------------------------------------
-
-
-
-" --------------------------------- Neosnippet -------------------------------
-
-" Enable function prototype completion
-let g:neosnippet#enable_completed_snippet = 1
-autocmd CompleteDone * call neosnippet#complete_done()
-
-" Hide annoying symbols
-set conceallevel=2
-set concealcursor=niv
-
-" Completion shortcut
-imap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
-smap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
-xmap <expr><C-o> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<C-o>"
-" --------------------------------------------------------------------------
-
-
-
 " --------------------------------- ALE -------------------------------
 
 " Enable completion where available.
@@ -688,4 +646,71 @@ let g:vimtex_compiler_latexmk = {'callback' : 0}
 " --------------------------------- Shfmt  -------------------------------
 " Use 2 spaces instead of tabs
 let g:shfmt_extra_args = '-i 2'
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Coc  -------------------------------
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Confirm completion
+inoremap <silent><expr> <C-o> pumvisible() ? coc#_select_confirm() :
+                                           \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 " --------------------------------------------------------------------------
