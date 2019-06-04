@@ -59,7 +59,6 @@ call plug#end()
 
 " ------------------------------ GENERAL ------------------------------
 set mouse=a                                                         "Enable mouse
-set ttymouse=sgr                                                    "Make the mouse work even in columns beyond 223
 set backspace=indent,eol,start                                      "Make backspace normal
 set nocompatible                                                    "Disable vi compatibility. Because we're not in 1995
 set tw=0                                                            "Disable automactic line wrapping
@@ -76,6 +75,10 @@ set noshowmode                                                      "Do not show
 
 set termguicolors                                                   "Enable TrueColor
 
+if !has('nvim')
+  set ttymouse=sgr                                                    "Make the mouse work even in columns beyond 223
+endif
+
 let mapleader=","                                                   "Leader is comma
 let maplocalleader=","                                              "Local leader is comma
 
@@ -91,15 +94,19 @@ nnoremap ; :
 "Convert current word to uppercase
 inoremap <C-u> <esc>mzgUiw`za
 
-"Save a given assortment of windows so that they're there next time vim is opened (using vim -S)
-nnoremap <leader>s :mksession<CR>
+" Save file with sudo -- does not work with Neovim currently - https://github.com/neovim/neovim/issues/8217
+" command w!! w !sudo tee % > /dev/null
 
-" Save file with sudo
-command W w !sudo tee % > /dev/null
+" :(
+command! WQ wq
+command! Wq wq
+command! W w
+command! Q q
 
-" Add two new commands:
-"    * DiffSaved - show the changes after the last save
-"    * diffoff - exit from the mode
+" Increase the maximum amount of memory to use for pattern matching
+set maxmempattern=2000
+
+"show the changes after the last save
 function! s:DiffWithSaved()
   let filetype=&ft
   diffthis
@@ -117,8 +124,8 @@ command Foc execute "winc | | winc _"
 command Unfoc execute "winc ="
 
 " vimrc key mappings
-nmap <silent> <leader>ev :edit ~/.vimrc<CR>
-nmap <silent> <leader>sv :source ~/.vimrc<CR>
+nmap <silent> <leader>ve :edit ~/.vimrc<CR>
+nmap <silent> <leader>vs :source ~/.vimrc<CR>
 
 " Reload file
 inoremap <silent> <leader>r :edit<CR>
