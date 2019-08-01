@@ -91,7 +91,7 @@ cf-connect() {
     cf api --skip-ssl-validation https://api."$api".nip.io
     cf auth admin "$pass"
 
-    cf-org eirini
+    cf-org o
 }
 
 
@@ -100,8 +100,8 @@ cf-org() {
     local org="$1"
     cf create-org $org
     cf target -o $org
-    cf create-space dev
-    cf target -s dev
+    cf create-space s
+    cf target -s s
 }
 
 # ------------------ General ------------------
