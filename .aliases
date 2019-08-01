@@ -23,6 +23,7 @@ alias gdiffc='git diff --cached'
 
 alias gs='git status'
 
+alias gb='git branch'
 alias gba='git branch -a'
 alias gco='git checkout'
 alias gcob='git checkout -b'
@@ -67,6 +68,7 @@ alias kgpvc='kubectl get pvc'
 alias kgsa='kubectl get serviceaccount'
 alias kgro='kubectl get role'
 alias kgsc='kubectl get storageclass'
+alias kgnp='kubectl get networkpolicies'
 
 alias kdes='kubectl describe'
 alias kdesp='kubectl describe pod'
@@ -79,6 +81,7 @@ alias kdesi='kubectl describe ingress'
 alias kdesrs='kubectl describe replicaset'
 alias kdessa='kubectl describe serviceaccount'
 alias kdesro='kubectl describe role'
+alias kdesnp='kubectl describe networkpolicies'
 
 alias ke='kubectl edit'
 alias kep='kubectl edit pod'
@@ -93,6 +96,7 @@ alias keds='kubectl edit daemonset'
 alias kers='kubectl edit replicaset'
 alias kero='kubectl edit role'
 alias kesa='kubectl edit serviceaccount'
+alias kenp='kubectl edit networkpolicies'
 
 alias kdel='kubectl delete'
 alias kdelp='kubectl delete pod'
@@ -103,6 +107,7 @@ alias kdelj='kubectl delete job'
 alias kdeli='kubectl delete ingress'
 alias kdelrs='kubectl delete replicaset'
 alias kdelsec='kubectl delete secret'
+alias kdelnp='kubectl delete networkpolicies'
 
 alias kpnuke='kube-nuke-pod'
 
@@ -110,6 +115,10 @@ alias ka='kubectl apply -f'
 alias klo='kubectl logs -f'
 alias kex='kube-exec'
 alias kns='change-kube-namespace'
+
+alias kt='kubectl top'
+alias ktn='kubectl top nodes'
+alias ktp='kubectl top pods'
 
 
 # ------------------ `General ------------------

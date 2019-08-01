@@ -85,6 +85,16 @@ kube-nuke-pod() {
 }
 
 # ------------------ CF ------------------
+cf-connect() {
+    local api="$1"
+    local pass="$2"
+    cf api --skip-ssl-validation https://api."$api".nip.io
+    cf auth admin "$pass"
+
+    cf-org eirini
+}
+
+
 # create a cf org with a dev space inside
 cf-org() {
     local org="$1"
