@@ -112,6 +112,9 @@ search-and-replace() {
     rg -l $keyword -t go -g '!vendor/' | xargs -L 1 -o vim -c "%s/$keyword\C/$replacement/gc"
 }
 
+weather() {
+    curl -s http://wttr.in/
+}
 
 extract(){
     if [ -f $1 ] ; then
