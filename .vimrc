@@ -22,6 +22,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'                                                                       " Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, XML tags, and more) in pairs
 
     Plug 'JamshedVesuna/vim-markdown-preview'                                                       " Preview markdown files in the browser
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                        " Preview markdown on your modern browser with sync scroll and flexible configuration
 
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }                                              " Golang plugin
     Plug 'trayo/vim-ginkgo-snippets'                                                                " Add snippets for Ginkgo BDD testing library for go
@@ -56,6 +57,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
 
+    Plug 'hashivim/vim-terraform'
+
 call plug#end()
 " ---------------------------------------------------------------------
 
@@ -68,6 +71,8 @@ set nocompatible                                                    "Disable vi 
 set tw=0                                                            "Disable automactic line wrapping
 set list                                                            "Display whitespace characters
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<,space:·          "Specify whitespace characters visualization
+" au BufNewFile,BufRead *.csv set nolist
+
 set noerrorbells                                                    "Disable beeping
 set encoding=utf8                                                   "Encoding
 set ffs=unix,dos                                                    "File formats that will be tried (in order) when vim reads and writes to a file
@@ -76,6 +81,8 @@ set scrolloff=5                                                     "Show at lea
 set hidden                                                          "Opening a new file when the current buffer has unsaved changes causes files to be hidden instead of closed
 set undolevels=1000                                                 "Undo many times
 set noshowmode                                                      "Do not show message on last line when in Insert, Replace or Visual mode
+set updatetime=300                                                  " If this many milliseconds nothing is typed the swap file will be written to disk
+set inccommand=split                                                "Shows the effects of a command incrementally, as you type; show in a split window as well
 
 set termguicolors                                                   "Enable TrueColor
 
@@ -181,14 +188,48 @@ highlight StatusLineNC guibg=#1c1c1c
 
 " Wildmenu autocomplete
 highlight StatusLine gui=italic guifg=grey guibg=#1c1c1c
+
+
+" Preview window background color
+" hi PreviewBackground guibg=red
+
+" " Call method on window enter
+" augroup WindowManagement
+"   autocmd!
+"   autocmd WinEnter * call Handle_Win_Enter()
+" augroup END
+
+" " Change highlight group of preview window when open
+" function! Handle_Win_Enter()
+"   if &previewwindow
+"     setlocal winhighlight=Normal:CursorLine
+"   endif
+" endfunction
+
+
+" Dim inactive windows - https://medium.com/@caleb89taylor/customizing-individual-neovim-windows-4a08f2d02b4e
+" hi ActiveWindow guibg=#1c1c1c
+" hi InactiveWindow guibg=red
+
+" " Call method on window enter
+" augroup WindowManagement
+"   autocmd!
+"   autocmd WinEnter * call Handle_Win_Enter()
+" augroup END
+
+" " Change highlight group of active/inactive windows
+" function! Handle_Win_Enter()
+"   setlocal winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+" endfunction
+
 " ---------------------------------------------------------------------
 
 
 " ------------------------------ SPACES & TABS -----------------------------
-set tabstop=4               "Number of visual spaces per TAB
-set softtabstop=4           "Number of spaces in tab when editing
+set tabstop=2               "Number of visual spaces per TAB
+set softtabstop=2           "Number of spaces in tab when editing
 set expandtab               "Tabs are spaces
-set shiftwidth=4            "Indent with 4 spaces
+set shiftwidth=2            "Indent with 4 spaces
 " ---------------------------------------------------------------------
 
 
@@ -483,7 +524,13 @@ autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit'
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')            " Horizontal split with test file
 
 " Show type info for word under the cursor
-let g:go_auto_type_info = 1
+" let g:go_auto_type_info = 1
+
+" Please use gopls
+" let g:go_info_mode = 'gocode'
+
+" configure a custom 'updatetime' for Go source files
+let g:go_updatetime = 100
 
 " Highlight all uses of the identifier under the cursor
 let g:go_auto_sameids = 1
@@ -534,24 +581,43 @@ let g:ale_list_window_size = 5
 " Disable highlighting
 let g:ale_set_highlights = 0
 
+" Disable loclist
+let g:ale_set_loclist = 0
+
+" let excludeo = "\"exported \\w+ (\\S*['.]*)([a-zA-Z'.*]*) should have comment or be unexported\""
+" let g:ale_go_gometalinter_options = '--exclude=' . excludeo
+"   " \ --aggregate
+"   " \ --fast
+"   " \ --sort=line
+"   " \ --vendor
+"   " " \ --exclude '(comment on exported (method|function|type|const)| should have( a package)? comment|comment should be of the form)'
+"   " \ '
+
+" let g:ale_linters = {'go': ['gometalinter', 'gofmt', 'golint']}
+
+
 " --------------------------------------------------------------------------
 
 
 
 " --------------------------------- Startify -------------------------------
 
-" Center the cow
-function! s:filter_header(lines) abort
-        let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
-        let centered_lines = map(copy(a:lines),
-            \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-        return centered_lines
+" Center the cow -- DOES NOT WORK
+function! s:center(lines) abort
+  let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
+  let centered_lines = map(copy(a:lines),
+        \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+  return centered_lines
 endfunction
 
-let g:startify_custom_header = s:filter_header(startify#fortune#cowsay())
+let g:startify_custom_header = s:center(startify#fortune#cowsay())
 
 " Center the lists
-let g:startify_padding_left = 130
+" let g:startify_padding_left = 130
+
+" When opening a file or bookmark, DO NOT change to its directory<Paste>
+let g:startify_change_to_dir = 0
+
 " --------------------------------------------------------------------------
 
 
@@ -559,11 +625,15 @@ let g:startify_padding_left = 130
 " --------------------------------- Schlepp -------------------------------
 
 " Movement
-vmap <unique> <up>    <Plug>SchleppUp
-vmap <unique> <down>  <Plug>SchleppDown
-vmap <unique> <left>  <Plug>SchleppLeft
-vmap <unique> <right> <Plug>SchleppRight
+" vmap <unique> <up>    <Plug>SchleppUp
+" vmap <unique> <down>  <Plug>SchleppDown
+" vmap <unique> <left>  <Plug>SchleppLeft
+" vmap <unique> <right> <Plug>SchleppRight
 
+vmap <unique> <M-up>    <Plug>SchleppUp
+vmap <unique> <M-down>  <Plug>SchleppDown
+vmap <unique> <M-left>  <Plug>SchleppLeft
+vmap <unique> <M-right> <Plug>SchleppRight
 " --------------------------------------------------------------------------
 
 
