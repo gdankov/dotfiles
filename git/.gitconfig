@@ -1,6 +1,42 @@
 [alias]
-    logtree = log --oneline --graph --all --decorate
-    gui = !sh -c /usr/local/git/libexec/git-core/git-gui
-    co = checkout
+  logf = log --format=fuller
+  lol = log --oneline --graph --decorate
+  lola = log --graph --decorate --oneline --all
+  co = checkout
+  st = status
+  br = branch
+  co = checkout
+  sw = switch
+[core]
+  editor = /usr/local/bin/nvim
+  pager = diff-so-fancy | less --tabs=4 -RFX
+[push]
+  default = current
+[fetch]
+  prune = true
+[pull]
+  rebase = true
+[rebase]
+  autostash = true
+[rerere]
+  enabled = true
+[commit]
+  verbose = true
+[merge]
+  conflictstyle = diff3
+[log]
+  format = fuller
+[color "status"]
+  branch = white
+  added = green
+  changed = red
+  untracked = cyan
+[diff]
+  wordRegex = [^[:space:]]
+  algorithm = patience
+[help]
+  autocorrect = 1
+[url "git@github.com:"]
+  pushInsteadOf = https://github.com/
 [include]
-    path = ~/.gitconfig.local
+  path = ~/.gitconfig.local
