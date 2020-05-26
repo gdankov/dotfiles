@@ -10,8 +10,6 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'scrooloose/nerdtree'                                                                      " Directory tree explorer
 
-    Plug 'w0rp/ale'                                                                                 " Asynchronous Lint Engine
-
     Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}                              " Intellisense engine; full language server protocol support; built from source code
 
     Plug '/usr/local/opt/fzf'                                                                       " Use brew installed fzf
@@ -21,7 +19,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'tpope/vim-surround'                                                                       " Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, XML tags, and more) in pairs
 
-    Plug 'JamshedVesuna/vim-markdown-preview'                                                       " Preview markdown files in the browser
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                        " Preview markdown on your modern browser with sync scroll and flexible configuration
 
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }                                              " Golang plugin
     Plug 'trayo/vim-ginkgo-snippets'                                                                " Add snippets for Ginkgo BDD testing library for go
@@ -56,6 +54,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
 
+    Plug 'rust-lang/rust.vim'                                                                       " Rust lang integration
+
 call plug#end()
 " ---------------------------------------------------------------------
 
@@ -66,8 +66,8 @@ set mouse=a                                                         "Enable mous
 set backspace=indent,eol,start                                      "Make backspace normal
 set nocompatible                                                    "Disable vi compatibility. Because we're not in 1995
 set tw=0                                                            "Disable automactic line wrapping
-set list                                                            "Display whitespace characters
 set listchars=tab:▸\ ,trail:~,extends:>,precedes:<,space:·          "Specify whitespace characters visualization
+
 set noerrorbells                                                    "Disable beeping
 set encoding=utf8                                                   "Encoding
 set ffs=unix,dos                                                    "File formats that will be tried (in order) when vim reads and writes to a file
@@ -76,6 +76,8 @@ set scrolloff=5                                                     "Show at lea
 set hidden                                                          "Opening a new file when the current buffer has unsaved changes causes files to be hidden instead of closed
 set undolevels=1000                                                 "Undo many times
 set noshowmode                                                      "Do not show message on last line when in Insert, Replace or Visual mode
+set updatetime=100                                                  " If this many milliseconds nothing is typed the swap file will be written to disk
+set inccommand=split                                                "Shows the effects of a command incrementally, as you type; show in a split window as well
 
 set termguicolors                                                   "Enable TrueColor
 
@@ -94,12 +96,6 @@ inoremap ;; <esc>
 
 " Saving that precious key hit
 nnoremap ; :
-
-"Convert current word to uppercase
-inoremap <C-u> <esc>mzgUiw`za
-
-" Save file with sudo -- does not work with Neovim currently - https://github.com/neovim/neovim/issues/8217
-" command w!! w !sudo tee % > /dev/null
 
 " :(
 command! WQ wq
@@ -181,14 +177,15 @@ highlight StatusLineNC guibg=#1c1c1c
 
 " Wildmenu autocomplete
 highlight StatusLine gui=italic guifg=grey guibg=#1c1c1c
+
 " ---------------------------------------------------------------------
 
 
 " ------------------------------ SPACES & TABS -----------------------------
-set tabstop=4               "Number of visual spaces per TAB
-set softtabstop=4           "Number of spaces in tab when editing
+set tabstop=2               "Number of visual spaces per TAB
+set softtabstop=2           "Number of spaces in tab when editing
 set expandtab               "Tabs are spaces
-set shiftwidth=4            "Indent with 4 spaces
+set shiftwidth=2            "Indent with 2 spaces
 " ---------------------------------------------------------------------
 
 
@@ -430,33 +427,7 @@ function! LightlineReadonly()
   return &ft !~? 'help' && &readonly ? 'RO' : ''
 endfunction
 
-" ALE integration
-
-function! LightlineLinterWarnings() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
-endfunction
-
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
-endfunction
-
-autocmd User ALELint call lightline#update()
-
-augroup LightLineOnALE
-  autocmd!
-  autocmd User ALEFixPre   call lightline#update()
-  autocmd User ALEFixPost  call lightline#update()
-  autocmd User ALELintPre  call lightline#update()
-  autocmd User ALELintPost call lightline#update()
-augroup end
-
 " --------------------------------------------------------------------------
-
 
 
 " --------------------------------- Vim-Go --------------------------------
@@ -482,8 +453,8 @@ autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')  
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')           " Vertical split with test file
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')            " Horizontal split with test file
 
-" Show type info for word under the cursor
-let g:go_auto_type_info = 1
+" configure a custom 'updatetime' for Go source files
+let g:go_updatetime = 100
 
 " Highlight all uses of the identifier under the cursor
 let g:go_auto_sameids = 1
@@ -503,55 +474,24 @@ let vim_markdown_preview_github=1
 " --------------------------------------------------------------------------
 
 
-
-" --------------------------------- ALE -------------------------------
-
-" Error sign in gutter
-let g:ale_sign_error = 'X»'
-
-" Warning sign in gutter
-let g:ale_sign_warning = '!»'
-
-" Warning sign color
-highlight ALEWarningSign guibg=#1c1c1c guifg=#8f9627
-highlight ALEErrorSign guibg=#1c1c1c guifg=#dd1c1c
-
-" Format for echo messages
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-" Navigate between errors
-nmap <silent> [a <Plug>(ale_previous_wrap)
-nmap <silent> ]a <Plug>(ale_next_wrap)
-
-" Do not run when typing
-let g:ale_lint_on_text_changed = 'never'
-
-" Show 5 lines of errors (default: 10)
-let g:ale_list_window_size = 5
-
-" Disable highlighting
-let g:ale_set_highlights = 0
-
-" --------------------------------------------------------------------------
-
-
-
 " --------------------------------- Startify -------------------------------
 
-" Center the cow
-function! s:filter_header(lines) abort
-        let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
-        let centered_lines = map(copy(a:lines),
-            \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-        return centered_lines
+" Center the cow -- DOES NOT WORK
+function! s:center(lines) abort
+  let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
+  let centered_lines = map(copy(a:lines),
+        \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+  return centered_lines
 endfunction
 
-let g:startify_custom_header = s:filter_header(startify#fortune#cowsay())
+let g:startify_custom_header = s:center(startify#fortune#cowsay())
 
 " Center the lists
-let g:startify_padding_left = 130
+" let g:startify_padding_left = 130
+
+" When opening a file or bookmark, DO NOT change to its directory<Paste>
+let g:startify_change_to_dir = 0
+
 " --------------------------------------------------------------------------
 
 
@@ -559,11 +499,10 @@ let g:startify_padding_left = 130
 " --------------------------------- Schlepp -------------------------------
 
 " Movement
-vmap <unique> <up>    <Plug>SchleppUp
-vmap <unique> <down>  <Plug>SchleppDown
-vmap <unique> <left>  <Plug>SchleppLeft
-vmap <unique> <right> <Plug>SchleppRight
-
+vmap <unique> <M-up>    <Plug>SchleppUp
+vmap <unique> <M-down>  <Plug>SchleppDown
+vmap <unique> <M-left>  <Plug>SchleppLeft
+vmap <unique> <M-right> <Plug>SchleppRight
 " --------------------------------------------------------------------------
 
 
@@ -703,4 +642,13 @@ augroup end
 inoremap <silent><expr> <C-o> pumvisible() ? coc#_select_confirm() :
                                            \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+" Go to next/previous error
+nmap <silent> <leader>a <Plug>(coc-diagnostic-next-error)
+nmap <silent> <leader>A <Plug>(coc-diagnostic-prev-error)
+
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Rust  -------------------------------
+let g:rustfmt_autosave = 1
 " --------------------------------------------------------------------------
