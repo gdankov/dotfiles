@@ -1,11 +1,10 @@
 [alias]
   logf = log --format=fuller
   lol = log --oneline --graph --decorate
-  lola = log --graph --decorate --oneline --all
+  lola = log --oneline --graph --decorate --all
   co = checkout
   st = status
   br = branch
-  co = checkout
   sw = switch
 [core]
   editor = /usr/local/bin/nvim
