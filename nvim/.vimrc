@@ -233,9 +233,9 @@ nnoremap j gj
 "Move vertically (up) by visual line
 nnoremap k gk
 
-" Movement in popup menu
-inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+" Continue indenting
+vnoremap > >gv
+vnoremap < <gv
 " ---------------------------------------------------------------------
 
 
