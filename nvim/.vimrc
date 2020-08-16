@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'tpope/vim-surround'                                                                       " Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, XML tags, and more) in pairs
 
+    Plug 'JamshedVesuna/vim-markdown-preview'                                                       " Preview markdown files in the browser
     Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                        " Preview markdown on your modern browser with sync scroll and flexible configuration
 
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }                                              " Golang plugin
@@ -655,5 +656,12 @@ augroup end
 " Confirm completion
 inoremap <silent><expr> <C-o> pumvisible() ? coc#_select_confirm() :
                                            \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" --------------------------------------------------------------------------
+
+
+" --------------------------------- Ultisnips  -------------------------------
+
+let g:UltiSnipsExpandTrigger="<C-j>"
 
 " --------------------------------------------------------------------------
