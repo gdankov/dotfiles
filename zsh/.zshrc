@@ -57,6 +57,7 @@ source <(kubectl completion zsh)
 # Golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+export GO111MODULE=auto
 
 # Spaceship theme config
 export SPACESHIP_DIR_TRUNC=10
@@ -134,5 +135,3 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # zsh-bd
 . $HOME/.zsh/plugins/bd/bd.zsh
-
-export GO111MODULE=auto
