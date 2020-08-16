@@ -463,29 +463,27 @@ let vim_markdown_preview_browser='Google Chrome'
 " Use github syntax
 let vim_markdown_preview_github=1
 
+" Leave Ctrl-P alone
+let vim_markdown_preview_hotkey='<Leader>mp'
+
 " --------------------------------------------------------------------------
 
 
 " --------------------------------- Startify -------------------------------
 
-" Center the cow -- DOES NOT WORK
-function! s:center(lines) abort
-  let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
-  let centered_lines = map(copy(a:lines),
-        \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-  return centered_lines
-endfunction
-
-let g:startify_custom_header = s:center(startify#fortune#cowsay())
-
-" Center the lists
-" let g:startify_padding_left = 130
-
-" When opening a file or bookmark, DO NOT change to its directory<Paste>
+" When opening a file or bookmark, DO NOT change to its directory
 let g:startify_change_to_dir = 0
 
-" --------------------------------------------------------------------------
+" Put project MRUs first
+let g:startify_lists = [
+                  \ { 'type': 'dir',       'header': [   'MRU ' . getcwd()] },
+                  \ { 'type': 'files',     'header': [   'MRU']             },
+                  \ { 'type': 'sessions',  'header': [   'Sessions']        },
+                  \ { 'type': 'bookmarks', 'header': [   'Bookmarks']       },
+                  \ { 'type': 'commands',  'header': [   'Commands']        },
+                  \ ]
 
+" --------------------------------------------------------------------------
 
 
 " --------------------------------- Schlepp -------------------------------
