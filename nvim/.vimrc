@@ -564,12 +564,36 @@ let g:vimtex_compiler_latexmk = {'callback' : 0}
 
 
 " --------------------------------- Shfmt  -------------------------------
+
 " Use 2 spaces instead of tabs
-let g:shfmt_extra_args = '-i 2'
+let g:shfmt_extra_args = '-i 2 -ci'
+" Run on save
+let g:shfmt_fmt_on_save = 1
+
 " --------------------------------------------------------------------------
 
 
 " --------------------------------- Coc  -------------------------------
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" always show signcolumns
+set signcolumn=yes
+
+" add json-lsp
+let g:coc_global_extensions=['coc-json', 'coc-yaml']
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -582,14 +606,12 @@ function! s:show_documentation()
   endif
 endfunction
 
+let g:coc_status_warning_sign = '!'
+let g:coc_status_error_sign = 'X '
 
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -604,22 +626,23 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+" Intelligent rename
+nmap <leader>rn  <Plug>(coc-rename)
 
 augroup mygroup
   autocmd!
@@ -633,13 +656,4 @@ augroup end
 inoremap <silent><expr> <C-o> pumvisible() ? coc#_select_confirm() :
                                            \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Go to next/previous error
-nmap <silent> <leader>a <Plug>(coc-diagnostic-next-error)
-nmap <silent> <leader>A <Plug>(coc-diagnostic-prev-error)
-
-" --------------------------------------------------------------------------
-
-
-" --------------------------------- Rust  -------------------------------
-let g:rustfmt_autosave = 1
 " --------------------------------------------------------------------------
