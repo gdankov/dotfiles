@@ -66,7 +66,8 @@ set mouse=a                                                         "Enable mous
 set backspace=indent,eol,start                                      "Make backspace normal
 set nocompatible                                                    "Disable vi compatibility. Because we're not in 1995
 set tw=0                                                            "Disable automactic line wrapping
-set listchars=tab:▸\ ,trail:~,extends:>,precedes:<,space:·          "Specify whitespace characters visualization
+set nolist                                                          "Do not Display whitespace characters
+set listchars=tab:▸\ ,trail:~,extends:>,precedes:<,space:·          "Specify whitespace characters visualization, if displayed
 
 set noerrorbells                                                    "Disable beeping
 set encoding=utf8                                                   "Encoding
@@ -75,9 +76,10 @@ set splitbelow                                                      "Set preview
 set scrolloff=5                                                     "Show at least N lines above/below the cursor.
 set hidden                                                          "Opening a new file when the current buffer has unsaved changes causes files to be hidden instead of closed
 set undolevels=1000                                                 "Undo many times
+set undofile                                                        "Undo across vim sessions
 set noshowmode                                                      "Do not show message on last line when in Insert, Replace or Visual mode
 set updatetime=100                                                  " If this many milliseconds nothing is typed the swap file will be written to disk
-set inccommand=split                                                "Shows the effects of a command incrementally, as you type; show in a split window as well
+set inccommand=nosplit                                              "Shows the effects of a command incrementally, as you type; show in a split window as well
 
 set termguicolors                                                   "Enable TrueColor
 
@@ -124,8 +126,9 @@ command Foc execute "winc | | winc _"
 command Unfoc execute "winc ="
 
 " vimrc key mappings
-nmap <silent> <leader>ve :edit ~/.vimrc<CR>
-nmap <silent> <leader>vs :source ~/.vimrc<CR>
+" TODO: extract vimrc path as env var
+nmap <silent> <leader>ve :edit ~/.config/nvim/init.vim<CR>
+nmap <silent> <leader>vs :source ~/.config/nvim/init.vim<CR>
 
 " Reload file
 inoremap <silent> <leader>r :edit<CR>
@@ -427,10 +430,11 @@ function! LightlineReadonly()
   return &ft !~? 'help' && &readonly ? 'RO' : ''
 endfunction
 
-" --------------------------------------------------------------------------
-
-
 " --------------------------------- Vim-Go --------------------------------
+
+let g:go_gopls_enabled=0
+let g:go_doc_keywordprg_enabled=0
+let g:go_fmt_autosave=1
 
 " Highlight different language structs
 let g:go_highlight_types = 1
@@ -442,22 +446,10 @@ let g:go_highlight_build_constraints = 1
 " disable the default mappings provided by the plugin
 let g:go_def_mapping_enabled = 0
 
-" Call goimports on save
-let g:go_fmt_command = "goimports"
-
-" Disable showing a location list when |'g:go_fmt_command'| fails
-let g:go_fmt_fail_silently = 1
-
 " Alternate toggles
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')              " Switch to test file
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')           " Vertical split with test file
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')            " Horizontal split with test file
-
-" configure a custom 'updatetime' for Go source files
-let g:go_updatetime = 100
-
-" Highlight all uses of the identifier under the cursor
-let g:go_auto_sameids = 1
 
 " --------------------------------------------------------------------------
 
@@ -503,6 +495,7 @@ vmap <unique> <M-up>    <Plug>SchleppUp
 vmap <unique> <M-down>  <Plug>SchleppDown
 vmap <unique> <M-left>  <Plug>SchleppLeft
 vmap <unique> <M-right> <Plug>SchleppRight
+
 " --------------------------------------------------------------------------
 
 
