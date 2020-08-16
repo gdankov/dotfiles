@@ -1,59 +1,35 @@
 " ------------------------------ PLUGINS ------------------------------
 call plug#begin('~/.vim/plugged')
     Plug 'junegunn/vim-plug'                                                                        " This plugin manager
-
     Plug 'itchyny/lightline.vim'                                                                    " Light and configurable statusline
-
     Plug 'tpope/vim-fugitive'                                                                       " Git wrapper
-
     Plug 'rhysd/git-messenger.vim'                                                                  " Reveal the commit messages under the cursor in a 'popup window'
-
     Plug 'scrooloose/nerdtree'                                                                      " Directory tree explorer
-
     Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}                              " Intellisense engine; full language server protocol support; built from source code
-
     Plug '/usr/local/opt/fzf'                                                                       " Use brew installed fzf
     Plug 'junegunn/fzf.vim'                                                                         " Awesome fuzzy finder
-
     Plug 'jiangmiao/auto-pairs'                                                                     " Insert/delete brackets
-
     Plug 'tpope/vim-surround'                                                                       " Provides mappings to easily delete, change and add surroundings (parentheses, brackets, quotes, XML tags, and more) in pairs
-
     Plug 'JamshedVesuna/vim-markdown-preview'                                                       " Preview markdown files in the browser
     Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                        " Preview markdown on your modern browser with sync scroll and flexible configuration
-
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }                                              " Golang plugin
     Plug 'trayo/vim-ginkgo-snippets'                                                                " Add snippets for Ginkgo BDD testing library for go
     Plug 'SirVer/ultisnips'                                                                         " Add various code snippets
     Plug 'josharian/impl'                                                                           " Generates method stubs for implementing an interface
-
     Plug 'jeffkreeftmeijer/vim-numbertoggle'                                                       " Toggle between relative and absolute line numbers -- Note: currently disabled because it's causing lag for some reason
-
     Plug 'vim-ruby/vim-ruby'                                                                        " Ruby plugin
-
     Plug 'mhinz/vim-startify'                                                                       " Fancy start screen
-
     Plug 'zirrostig/vim-schlepp'                                                                    " Move lines (or bocks) of text around easily
-
     Plug 'tpope/vim-commentary'                                                                     " Comment stuff out
-
     Plug 'christoomey/vim-system-copy'                                                              " Add mappings to copy to clipboard
-
-    Plug 'luan/vipe'                                                                                " Send test commands to a pipe
-
     Plug 'powerman/vim-plugin-AnsiEsc'                                                              " ANSI escape sequences concealed, but highlighted as specified
-
     Plug 'RRethy/vim-illuminate'                                                                    " Selectively illuminating other uses of the current word under the cursor
-
     Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }                                                        " Runs shfmt to auto format the current buffer
-
     Plug 'romainl/vim-cool'                                                                         " Make hlsearch more useful
-
     Plug 'lervag/vimtex'                                                                            " Plugin for editing LaTeX files
-
     Plug 'mtth/scratch.vim'                                                                         " Unobtrusive scratch window
-
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
+    Plug 'hashivim/vim-terraform'                                                                   " Basic vim/terraform integration
 
     Plug 'rust-lang/rust.vim'                                                                       " Rust lang integration
 
