@@ -9,6 +9,13 @@
 [core]
   editor = /usr/local/bin/nvim
   pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = delta
+[delta]
+  ; TODO: improve delta colors
+  syntax-theme = zenburn
+  plus-style = "syntax #417531"
+[interactive]
+  diffFilter = delta --color-only
 [push]
   default = current
 [fetch]
