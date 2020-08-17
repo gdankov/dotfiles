@@ -21,6 +21,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'mhinz/vim-startify'                                                                       " Fancy start screen
     Plug 'zirrostig/vim-schlepp'                                                                    " Move lines (or bocks) of text around easily
     Plug 'tpope/vim-commentary'                                                                     " Comment stuff out
+    Plug 'tpope/vim-repeat'                                                                         " Make '.' work for other plugins
     Plug 'christoomey/vim-system-copy'                                                              " Add mappings to copy to clipboard
     Plug 'powerman/vim-plugin-AnsiEsc'                                                              " ANSI escape sequences concealed, but highlighted as specified
     Plug 'RRethy/vim-illuminate'                                                                    " Selectively illuminating other uses of the current word under the cursor
@@ -30,8 +31,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'mtth/scratch.vim'                                                                         " Unobtrusive scratch window
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
     Plug 'hashivim/vim-terraform'                                                                   " Basic vim/terraform integration
+    Plug 'zhimsel/vim-stay'                                                                         " Remember cursor, folds, etc
 
-    Plug 'rust-lang/rust.vim'                                                                       " Rust lang integration
 
 call plug#end()
 " ---------------------------------------------------------------------
@@ -306,6 +307,7 @@ let s:p.normal.warning = [ [ s:yellow, s:blackish ] ]
 let g:lightline#colorscheme#jellybeans#palette = lightline#colorscheme#flatten(s:p)
 
 " Lightline configs
+" TODO: add coc errors and warnings
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'active': {
@@ -639,5 +641,11 @@ inoremap <silent><expr> <C-o> pumvisible() ? coc#_select_confirm() :
 " --------------------------------- Ultisnips  -------------------------------
 
 let g:UltiSnipsExpandTrigger="<C-j>"
+
+" --------------------------------------------------------------------------
+
+" --------------------------------- vim-stay  -------------------------------
+
+set viewoptions=cursor,folds,slash,unix
 
 " --------------------------------------------------------------------------
