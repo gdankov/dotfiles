@@ -136,3 +136,8 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # zsh-bd
 . $HOME/.zsh/plugins/bd/bd.zsh
+
+# completion works for hidden files as well
+setopt globdots
+# make sure completion code does not produce the directory names ‘.’ and ‘..’
+zstyle ':completion:*' special-dirs false
