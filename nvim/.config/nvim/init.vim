@@ -1,5 +1,5 @@
 " ------------------------------ PLUGINS ------------------------------
-call plug#begin('~/.vim/plugged')
+call plug#begin()
     Plug 'junegunn/vim-plug'                                                                        " This plugin manager
     Plug 'itchyny/lightline.vim'                                                                    " Light and configurable statusline
     Plug 'tpope/vim-fugitive'                                                                       " Git wrapper
