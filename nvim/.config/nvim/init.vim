@@ -71,9 +71,6 @@ let maplocalleader=","                                              "Local leade
 "Replace escape with jk
 inoremap jk <esc>
 
-"For pairing convenience
-inoremap ;; <esc>
-
 " Saving that precious key hit
 nnoremap ; :
 
