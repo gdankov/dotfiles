@@ -20,7 +20,9 @@
     "json",
     "markdown",
     "sh",
-    "yaml"
+    "yaml",
+    "html",
+    "css"
   ],
   "languageserver": {
     "dhall": {

@@ -32,6 +32,8 @@ call plug#begin()
     Plug 'nanotech/jellybeans.vim'                                                                  " My current colorscheme
     Plug 'hashivim/vim-terraform'                                                                   " Basic vim/terraform integration
     Plug 'zhimsel/vim-stay'                                                                         " Remember cursor, folds, etc
+    Plug 'mattn/emmet-vim'                                                                          " Provide support for expanding abbreviations for HTML & CSS
+    Plug 'turbio/bracey.vim'                                                                        " Live editing for html, css, and javascript
 
 
 call plug#end()
@@ -644,5 +646,13 @@ let g:UltiSnipsExpandTrigger="<C-j>"
 " --------------------------------- vim-stay  -------------------------------
 
 set viewoptions=cursor,folds,slash,unix
+
+" --------------------------------------------------------------------------
+
+
+
+" --------------------------------- emmet  -------------------------------
+
+let g:user_emmet_leader_key='<C-e>'
 
 " --------------------------------------------------------------------------
