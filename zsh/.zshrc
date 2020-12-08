@@ -1,6 +1,8 @@
 # Path to oh-my-zsh installation.
 export ZSH="$HOME"/.oh-my-zsh
 
+ZSH_DISABLE_COMPFIX="true"
+
 ZSH_THEME=""
 
 # Set Pure ZSH theme
@@ -43,7 +45,6 @@ PROMPT='%F{red}$(precmd_pipestatus)'$PROMPT
 
 plugins=(
   z
-  fz
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -64,8 +65,11 @@ export SPACESHIP_DIR_TRUNC=10
 export SPACESHIP_DIR_TRUNC_REPO=false
 export SPACESHIP_EXIT_CODE_SHOW=true
 
+export HOMEBREW_PREFIX="$(brew --prefix)"
+
 # Zsh-autocomplete
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "$HOMEBREW_PREFIX"/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # Use ctrl-f to accept the current suggestion
 bindkey '^f' autosuggest-accept
 
@@ -102,11 +106,6 @@ export KUBE_EDITOR="nvim"
 # Keys
 bindkey '\C-b' beginning-of-line
 
-# Hub
-eval "$(hub alias -s)"
-fpath=(~/.zsh/completions $fpath)
-autoload -U compinit && compinit
-
 # Bat 🦇
 alias cat='bat --paging=never --style=plain'
 export BAT_THEME="TwoDark" 
@@ -134,8 +133,9 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# zsh-bd
-. $HOME/.zsh/plugins/bd/bd.zsh
+# override the n command location
+export N_PREFIX=$HOME/.n
+export PATH=$N_PREFIX/bin:$PATH
 
 # completion works for hidden files as well
 setopt globdots
