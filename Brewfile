@@ -54,6 +54,9 @@ brew "gradle"
 # node version manager
 brew "n"
 
+# a viewer for git and diff output
+brew "git-delta"
+
 # ----- Casks -----
 
 # Basic tools
