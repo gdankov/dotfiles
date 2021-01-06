@@ -20,26 +20,19 @@
     "sh",
     "yaml",
     "html",
-    "css"
+    "css",
+    "js",
+    "ts"
   ],
   "languageserver": {
     "dhall": {
       "command": "dhall-lsp-server",
-      "filetypes": [
-        "dhall"
-      ]
+      "filetypes": ["dhall"]
     },
     "golang": {
       "command": "gopls",
-      "rootPatterns": [
-        "go.mod",
-        ".vim/",
-        ".git/",
-        ".hg/"
-      ],
-      "filetypes": [
-        "go"
-      ],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
       "initializationOptions": {
         "completeUnimported": true,
         "usePlaceholders": true,
@@ -48,16 +41,9 @@
     },
     "python": {
       "command": "python3",
-      "args": [
-        "-mpyls",
-        "-vv",
-        "--log-file",
-        "/tmp/lsp_python.log"
-      ],
+      "args": ["-mpyls", "-vv", "--log-file", "/tmp/lsp_python.log"],
       "trace.server": "verbose",
-      "filetypes": [
-        "python"
-      ],
+      "filetypes": ["python"],
       "settings": {
         "pyls": {
           "enable": true,
@@ -65,9 +51,7 @@
             "server": "verbose"
           },
           "commandPath": "",
-          "configurationSources": [
-            "pycodestyle"
-          ],
+          "configurationSources": ["pycodestyle"],
           "plugins": {
             "jedi_completion": {
               "enabled": true
