@@ -34,6 +34,9 @@ call plug#begin()
     Plug 'zhimsel/vim-stay'                                                                         " Remember cursor, folds, etc
     Plug 'mattn/emmet-vim'                                                                          " Provide support for expanding abbreviations for HTML & CSS
     Plug 'turbio/bracey.vim'                                                                        " Live editing for html, css, and javascript
+    Plug 'pangloss/vim-javascript'                                                                  " JavaScript support
+    Plug 'leafgarland/typescript-vim'                                                               " TypeScript syntax
+
 
 
 call plug#end()
@@ -165,7 +168,7 @@ highlight StatusLine gui=italic guifg=grey guibg=#1c1c1c
 set tabstop=2               "Number of visual spaces per TAB
 set softtabstop=2           "Number of spaces in tab when editing
 set expandtab               "Tabs are spaces
-set shiftwidth=2            "Indent with 2 spaces
+set shiftwidth=4            "Indent with 2 spaces
 " ---------------------------------------------------------------------
 
 
@@ -570,8 +573,8 @@ set cmdheight=2
 " always show signcolumns
 set signcolumn=yes
 
-" add json-lsp
-let g:coc_global_extensions=['coc-json', 'coc-yaml']
+" add LSPs
+let g:coc_global_extensions=['coc-json', 'coc-yaml', 'coc-tsserver']
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -654,5 +657,12 @@ set viewoptions=cursor,folds,slash,unix
 " --------------------------------- emmet  -------------------------------
 
 let g:user_emmet_leader_key='<C-e>'
+
+" --------------------------------------------------------------------------
+
+" --------------------------------- Prettier  -------------------------------
+
+" Set up :Prettier command to format current buffer
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " --------------------------------------------------------------------------
