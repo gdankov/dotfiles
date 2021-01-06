@@ -18,6 +18,9 @@ brew "git"
 # awesome cli fuzzy finder
 brew "fzf"
 
+# awesome JSON processor
+brew "jq"
+
 # kubernetes cli
 brew "kubectl"
 
@@ -27,6 +30,15 @@ brew "zsh-autosuggestions"
 # Load/unload environment variables based on PWD
 brew "direnv"
 
+# execute a program periodically
+brew "watch"
+
+# node version manager
+brew "nvm"
+
+# install postgresql
+brew "postgresql"
+
 # `cat`, but with syntax highlighting and Git integration
 brew "bat"
 
@@ -35,6 +47,9 @@ brew "ripgrep"
 
 # install node.js & npm
 brew "node"
+
+# install yarn for js
+brew "yarn"
 
 # Install python
 brew "python3"
