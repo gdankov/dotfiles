@@ -8,8 +8,6 @@
   "diagnostic.checkCurrentLine": true,
   "diagnostic.messageTarget": "float",
   "diagnostic.virtualText": false,
-  "diagnostic.refreshAfterSave": true,
-  "diagnostic.signOffset": 9999999,
   "diagnostic.errorSign": "E>",
   "diagnostic.warningSign": "W>",
   "codeLens.enable": true,
