@@ -91,4 +91,5 @@ cask "datagrip"
 
 # Prebuilt OpenJDK Binaries
 cask "adoptopenjdk"
+cask "adoptopenjdk11"
 cask "adoptopenjdk12"

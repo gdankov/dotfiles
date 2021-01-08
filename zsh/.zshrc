@@ -149,3 +149,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # pure theme colours
 zstyle :prompt:pure:path color '#7197ff'
+
+# set default jdk version
+jdk 11 > /dev/null 2>&1
