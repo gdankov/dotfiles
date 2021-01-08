@@ -46,10 +46,10 @@
 [log]
   format = fuller
 [color "status"]
-  branch = white
+  branch =  "#7197ff" # blue
   added = green
-  changed = red
-  untracked = cyan
+  changed = yellow
+  untracked = red
 [diff]
   wordRegex = [^[:space:]]
   algorithm = patience
