@@ -24,6 +24,9 @@ brew "jq"
 # kubernetes cli
 brew "kubectl"
 
+# better kubernetes cli
+brew "k9s"
+
 # fast/unobtrusive autosuggestions
 brew "zsh-autosuggestions"
 
