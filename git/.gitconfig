@@ -16,6 +16,9 @@
   plus-emph-style = "syntax #3a8424"
   minus-style = "syntax #571107"
   minus-emph-style = "syntax #a12916"
+  file-style = "#7197ff"
+  ; file-decoration-style = "ul #7197ff"
+  hunk-header-decoration-style = "box #7197ff"
   side-by-side = true
   features = unobtrusive-line-numbers
 [delta "unobtrusive-line-numbers"]
@@ -25,8 +28,8 @@
   line-numbers-plus-style = "#444444"
   line-numbers-left-format = "{nm:>4}┊"
   line-numbers-right-format = "{np:>4}│"
-  line-numbers-left-style = blue
-  line-numbers-right-style = blue
+  line-numbers-left-style = "#7197ff"
+  line-numbers-right-style = "#7197ff"
 [interactive]
   diffFilter = delta --color-only
 [push]
