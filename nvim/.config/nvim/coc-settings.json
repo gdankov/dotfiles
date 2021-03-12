@@ -10,7 +10,7 @@
   "diagnostic.virtualText": false,
   "diagnostic.errorSign": "E>",
   "diagnostic.warningSign": "W>",
-  "codeLens.enable": true,
+  "codeLens.enable": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.formatOnSaveFiletypes": [
     "dhall",
